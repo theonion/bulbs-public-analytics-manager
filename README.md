@@ -1,3 +1,5 @@
+<strong><i>:exclamation: THIS REPO SHOULD NOT BE MADE PUBLIC :exclamation:</i></strong>
+
 # bulbs-public-analytics-manager
 Analytics manager for public side of sites. Tracks clicks via Google Analytics by checking the following attributes on elements:
 
