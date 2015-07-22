@@ -1,0 +1,17 @@
+{
+  "name": "bulbs-public-analytics-manager",
+  "version": "0.0.1",
+  "authors": [
+    "Andrew Kos <akos@theonion.com>"
+  ],
+  "description": "Analytics manager for public side",
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components"
+  ],
+  "dependencies": {
+    "jquery": "~2.1.4"
+  }
+}
