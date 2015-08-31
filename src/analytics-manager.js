@@ -72,9 +72,7 @@ var AnalyticsManager = {
       ga('adTracker.send', 'pageview', 'theonion' + path);
       this.sendQuantcastPixel(freshPage);
       this.sendComscorePixel(freshPage, optionalTitle);
-      Influxer.sendEvent({ event: 'pageview', site: 'onion' });
       Ingest.sendEvent();
-      redisan.firePixel();
       if (!freshPage) {
         this.sendChartbeatEvent(optionalTitle);
       }
