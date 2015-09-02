@@ -38,7 +38,11 @@ var AnalyticsManager = {
   },
 
   comscoreBeacon: function() {
-    COMSCORE.beacon({ c1: 2, c2: 6036328, c3: "", c4: "", c5: "", c6: "", c15: "" });
+    if (window.COMSCORE) {
+      COMSCORE.beacon({ c1: 2, c2: 6036328, c3: "", c4: "", c5: "", c6: "", c15: "" });
+    } else {
+      console.warn('COMSCORE not available');
+    }
   },
 
   sendComscorePixel: function(freshPage, title) {
@@ -52,7 +56,11 @@ var AnalyticsManager = {
 
   sendQuantcastPixel: function(freshPage) {
     if (!freshPage) {
-      _qevents.push({ qacct:"p-39FYaAGOYli_-", 'event': "refresh" });
+      if (window._qevents) {
+        _qevents.push({ qacct:"p-39FYaAGOYli_-", 'event': "refresh" });
+      } else {
+        console.warn('_qevents not available');
+      }
     }
   },
 
@@ -65,6 +73,14 @@ var AnalyticsManager = {
     }
   },
 
+  sendIngestPixel: function () {
+    if (window.Ingest) {
+      Ingest.sendEvent();
+    } else {
+      console.warn('Ingest not available');
+    }
+  },
+
   trackPageView: function(freshPage, optionalTitle) {
     var path = window.location.pathname;
     if (this.trackedPaths.indexOf(path) < 0) {
@@ -72,7 +88,7 @@ var AnalyticsManager = {
       ga('adTracker.send', 'pageview', 'theonion' + path);
       this.sendQuantcastPixel(freshPage);
       this.sendComscorePixel(freshPage, optionalTitle);
-      Ingest.sendEvent();
+      this.sendIngestPixel();
       if (!freshPage) {
         this.sendChartbeatEvent(optionalTitle);
       }
