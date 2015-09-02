@@ -70,11 +70,11 @@ var AnalyticsManager = {
     if (this.trackedPaths.indexOf(path) < 0) {
       ga('send', 'pageview', path);
       ga('adTracker.send', 'pageview', 'theonion' + path);
-      this.sendQuantcastPixel(freshPage);
-      this.sendComscorePixel(freshPage, optionalTitle);
-      Ingest.sendEvent();
+      try { this.sendQuantcastPixel(freshPage); } catch (err) { console.error(err); }
+      try { this.sendComscorePixel(freshPage, optionalTitle); } catch (err) { console.error(err); }
+      try { Ingest.sendEvent(); } catch (err) { console.error(err); }
       if (!freshPage) {
-        this.sendChartbeatEvent(optionalTitle);
+        try { this.sendChartbeatEvent(optionalTitle); } catch (err) { console.error(err); }
       }
       this.trackedPaths.push(path);
     }
