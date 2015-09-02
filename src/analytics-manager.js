@@ -90,7 +90,7 @@ var AnalyticsManager = {
       this.sendComscorePixel(freshPage, optionalTitle);
       this.sendIngestPixel();
       if (!freshPage) {
-        try { this.sendChartbeatEvent(optionalTitle); } catch (err) { console.error(err); }
+        this.sendChartbeatEvent(optionalTitle);
       }
       this.trackedPaths.push(path);
     }
