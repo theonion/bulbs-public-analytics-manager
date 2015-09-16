@@ -1,6 +1,24 @@
+var _AnalyticsManagerError = function (message) {
+  this.name = 'AnalyticsManagerError';
+  this.message = message || '';
+
+  var error = new Error(this.message);
+  error.name = this.name;
+  this.stack = error.stack;
+};
+_AnalyticsManagerError.prototype = Object.create(Error.prototype);
+
 var AnalyticsManager = {
 
-  init: function() {
+  init: function(options) {
+    this._settings = $.extend({
+      site: ''
+    }, options);
+
+    if (!this._settings.site) {
+      throw new _AnalyticsManagerError('Site name must be specified!');
+    }
+
     this.trackedPaths = [];
     var body = document.getElementsByTagName('body');
     body[0].addEventListener('click', this.trackClick);
@@ -85,7 +103,7 @@ var AnalyticsManager = {
     var path = window.location.pathname;
     if (this.trackedPaths.indexOf(path) < 0) {
       ga('send', 'pageview', path);
-      ga('adTracker.send', 'pageview', 'theonion' + path);
+      ga('adTracker.send', 'pageview', this._settings.site + path);
       this.sendQuantcastPixel(freshPage);
       this.sendComscorePixel(freshPage, optionalTitle);
       this.sendIngestPixel();

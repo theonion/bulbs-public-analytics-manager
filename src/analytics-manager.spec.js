@@ -39,7 +39,9 @@ describe("AnalyticsManager", function() {
     beforeEach(function() {
       sandbox.stub(subject, 'trackClick');
       subject.trackedPaths = ['/', '/section/politics'];
-      subject.init();
+      subject.init({
+        site: 'theonion'
+      });
       click(elementWithAttrs[0]);
     });
 
@@ -182,7 +184,7 @@ describe("AnalyticsManager", function() {
         eventStub.target = nestedFourUp[0];
 
         sandbox.stub(subject, 'sendEvent');
-        
+
         subject.trackClick(eventStub);
       });
 
