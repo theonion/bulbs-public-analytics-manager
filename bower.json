@@ -1,9 +1,10 @@
 {
   "name": "bulbs-public-analytics-manager",
-  "version": "0.0.3",
+  "version": "0.0.6",
   "authors": [
     "Andrew Kos <akos@theonion.com>",
-    "Chris Sprehe <csprehe@theonion.com>"
+    "Chris Sprehe <csprehe@theonion.com>",
+    "Vince Forgione <v.forgione@gmail.com>"
   ],
   "description": "Analytics manager for public side",
   "license": "MIT",
