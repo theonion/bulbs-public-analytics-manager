@@ -3,6 +3,7 @@ describe("AnalyticsManager", function() {
   var elementWithAttrs;
   var linkHtml = '<a href="#" id="clicked-link" data-track-category="Nav" data-track-action="Logo" data-track-label="/">Track Me</a>';
   var sandbox;
+  var site = 'theonion';
 
   // PhantomJS doesn't like triggering click events
   function click(el) {
@@ -39,7 +40,9 @@ describe("AnalyticsManager", function() {
     beforeEach(function() {
       sandbox.stub(subject, 'trackClick');
       subject.trackedPaths = ['/', '/section/politics'];
-      subject.init();
+      subject.init({
+        site: site
+      });
       click(elementWithAttrs[0]);
     });
 
@@ -49,6 +52,10 @@ describe("AnalyticsManager", function() {
 
     it('sets up an empty array of tracked paths', function() {
       expect(subject.trackedPaths).to.eql([]);
+    });
+
+    it('has settings defined', function () {
+      expect(subject._settings.site).to.eql(site);
     });
   });
 
@@ -182,7 +189,7 @@ describe("AnalyticsManager", function() {
         eventStub.target = nestedFourUp[0];
 
         sandbox.stub(subject, 'sendEvent');
-        
+
         subject.trackClick(eventStub);
       });
 
