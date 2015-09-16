@@ -1,4 +1,5 @@
 {
+  "priate": true,
   "scripts": {
     "test": "./node_modules/karma/bin/karma start resources/karma.conf.js"
   },
