@@ -1,3 +1,5 @@
+var Ingest = require('./analytics-ingest/analytics-ingest');
+
 var _AnalyticsManagerError = function (message) {
   this.name = 'AnalyticsManagerError';
   this.message = message || '';
@@ -91,22 +93,17 @@ var AnalyticsManager = {
     }
   },
 
-  sendIngestPixel: function () {
-    if (window.Ingest) {
-      Ingest.sendEvent();
-    } else {
-      console.warn('Ingest not available');
-    }
-  },
-
   trackPageView: function(freshPage, optionalTitle) {
     var path = window.location.pathname;
     if (this.trackedPaths.indexOf(path) < 0) {
       ga('send', 'pageview', path);
       ga('adTracker.send', 'pageview', this._settings.site + path);
+
       this.sendQuantcastPixel(freshPage);
       this.sendComscorePixel(freshPage, optionalTitle);
-      this.sendIngestPixel();
+
+      Ingest.sendEvent();
+
       if (!freshPage) {
         this.sendChartbeatEvent(optionalTitle);
       }
