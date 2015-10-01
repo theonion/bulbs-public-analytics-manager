@@ -6,7 +6,7 @@ var _AnalyticsIngestError = function (message) {
   error.name = this.name;
   this.stack = error.stack;
 };
-AnalyticsManagerError.prototype = Object.create(Error.prototype);
+_AnalyticsIngestError.prototype = Object.create(Error.prototype);
 
 var AnalyticsIngest = {
   /**
