@@ -14,7 +14,8 @@ var AnalyticsManager = {
 
   init: function(options) {
     this._settings = $.extend({
-      site: ''
+      site: '',
+      ingestUrl: ''
     }, options);
 
     if (!this._settings.site) {
@@ -102,7 +103,7 @@ var AnalyticsManager = {
       this.sendQuantcastPixel(freshPage);
       this.sendComscorePixel(freshPage, optionalTitle);
 
-      Ingest.sendEvent();
+      Ingest.sendEvent(this._settings.ingestUrl);
 
       if (!freshPage) {
         this.sendChartbeatEvent(optionalTitle);
