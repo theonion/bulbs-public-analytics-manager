@@ -318,4 +318,29 @@ describe("AnalyticsManager", function() {
       });
     });
   });
+
+  describe("#pathInfo", function() {
+
+    it("strips all parameters except the specified query parameter", function () {
+      var pathName = '/one/two/three';
+      var queryParam = 'search';
+      var goodQuery = queryParam + '=hey';
+
+      subject.init({
+        site: 'testsite',
+        searchQueryParam: queryParam
+      });
+
+      sandbox.stub(subject, 'getWindowLocation').returns({
+        pathname: pathName,
+        search: 'no=123&' + goodQuery + '&notToBeIncluded=something'
+      });
+
+      var path = subject.pathInfo();
+
+      expect(path).to.equal(pathName + '?' + goodQuery);
+    });
+
+    it("should provide path without query parameters if no parameter is given", function () {});
+  });
 });

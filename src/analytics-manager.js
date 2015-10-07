@@ -15,7 +15,8 @@ var AnalyticsManager = {
   init: function(options) {
     this._settings = $.extend({
       site: '',
-      ingestUrl: ''
+      ingestUrl: '',
+      searchQueryParam: 'q',
     }, options);
 
     if (!this._settings.site) {
@@ -25,6 +26,10 @@ var AnalyticsManager = {
     this.trackedPaths = [];
     var body = document.getElementsByTagName('body');
     body[0].addEventListener('click', this.trackClick);
+  },
+
+  getWindowLocation: function () {
+    return window.location;
   },
 
   trackClick: function(event) {
@@ -86,7 +91,7 @@ var AnalyticsManager = {
   },
 
   sendChartbeatEvent: function(title) {
-    var path = window.location.pathname;
+    var path = this.getWindowLocation().pathname;
     if (window.pSUPERFLY) {
       window.pSUPERFLY.virtualPage(path, title);
     } else {
@@ -94,8 +99,34 @@ var AnalyticsManager = {
     }
   },
 
+  pathInfo: function () {
+    var pathInfo;
+    var url = this.getWindowLocation();
+    var urlParams;
+    (window.onpopstate = function () {
+      var match,
+          pl     = /\+/g,  // Regex for replacing addition symbol with a space
+          search = /([^&=]+)=?([^&]*)/g,
+          decode = function (s) { return decodeURIComponent(s.replace(pl, " ")); },
+          query  = window.location.search.substring(1);
+
+      urlParams = {};
+      while (match = search.exec(query))
+         urlParams[decode(match[1])] = decode(match[2]);
+    })();
+
+    if (this._settings.searchQueryParam) {
+      pathInfo = '/one/two/three?search=hey'
+    } else {
+      pathInfo = '/one/two/three?search=hey'
+    }
+
+    return pathInfo;
+  },
+
   trackPageView: function(freshPage, optionalTitle) {
-    var path = window.location.pathname;
+    //var path = this.getWindowLocation().pathname;
+    var path = this.pathInfo();
     if (this.trackedPaths.indexOf(path) < 0) {
       ga('send', 'pageview', path);
       ga('adTracker.send', 'pageview', this._settings.site + path);
