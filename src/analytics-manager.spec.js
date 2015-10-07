@@ -323,7 +323,7 @@ describe("AnalyticsManager", function() {
 
     it("strips all parameters except the specified query parameter", function () {
       var pathName = '/one/two/three';
-      var queryParam = 'search';
+      var queryParam = 'q';
       var goodQuery = queryParam + '=hey';
 
       subject.init({

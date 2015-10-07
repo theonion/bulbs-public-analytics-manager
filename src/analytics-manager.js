@@ -101,24 +101,19 @@ var AnalyticsManager = {
 
   pathInfo: function () {
     var pathInfo;
-    var url = this.getWindowLocation();
-    var urlParams;
-    (window.onpopstate = function () {
-      var match,
-          pl     = /\+/g,  // Regex for replacing addition symbol with a space
-          search = /([^&=]+)=?([^&]*)/g,
-          decode = function (s) { return decodeURIComponent(s.replace(pl, " ")); },
-          query  = window.location.search.substring(1);
-
-      urlParams = {};
-      while (match = search.exec(query))
-         urlParams[decode(match[1])] = decode(match[2]);
-    })();
-
+    var path = this.getWindowLocation().pathname;
+    var searchQuery = getParameterByName(this._settings.searchQueryParam);
+    // http://stackoverflow.com/questions/901115/how-can-i-get-query-string-values-in-javascript
+    function getParameterByName(name) {
+      name = name.replace(/[\[]/, "\\[").replace(/[\]]/, "\\]");
+      var regex = new RegExp("[\\?&]" + name + "=([^&#]*)"),
+          results = regex.exec(location.search);
+      return results === null ? "" : decodeURIComponent(results[1].replace(/\+/g, " "));
+    }
     if (this._settings.searchQueryParam) {
-      pathInfo = '/one/two/three?search=hey'
+      pathInfo = '/one/two/three?q=hey'
     } else {
-      pathInfo = '/one/two/three?search=hey'
+      pathInfo = path
     }
 
     return pathInfo;
