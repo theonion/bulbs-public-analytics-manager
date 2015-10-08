@@ -342,6 +342,23 @@ describe("AnalyticsManager", function() {
       expect(path).to.equal(pathName + '?' + goodQuery);
     });
 
-    it("should provide path without query parameters if no parameter is given", function () {});
+    it("should provide path without query parameters if no parameter is given", function () {
+      var pathName = '/one/two/three/four';
+      var queryParam = '';
+
+      subject.init({
+        site: 'testsite',
+        searchQueryParam: queryParam
+      });
+
+      sandbox.stub(subject, 'getWindowLocation').returns({
+        pathname: pathName,
+        search: pathName + '?hjghsgd&digg',
+      });
+
+      var path = subject.pathInfo();
+
+      expect(path).to.equal(pathName);
+    });
   });
 });
