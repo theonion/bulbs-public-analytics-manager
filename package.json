@@ -1,5 +1,6 @@
 {
-  "priate": true,
+  "name": "bulbs-public-analytics-manager",
+  "private": true,
   "scripts": {
     "test": "./node_modules/karma/bin/karma start resources/karma.conf.js"
   },

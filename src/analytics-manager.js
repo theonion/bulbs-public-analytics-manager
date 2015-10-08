@@ -99,28 +99,27 @@ var AnalyticsManager = {
     }
   },
 
+  getParameterByName: function(name) {
+    name = name.replace(/[\[]/, "\\[").replace(/[\]]/, "\\]");
+    var regex = new RegExp("[\\?&]" + name + "=([^&#]*)"),
+        results = regex.exec(this.getWindowLocation().search);
+    return results === null ? "" : decodeURIComponent(results[1].replace(/\+/g, " "));
+  },
+
   pathInfo: function () {
     var pathInfo;
     var path = this.getWindowLocation().pathname;
-    var searchQuery = getParameterByName(this._settings.searchQueryParam);
-    // http://stackoverflow.com/questions/901115/how-can-i-get-query-string-values-in-javascript
-    function getParameterByName(name) {
-      name = name.replace(/[\[]/, "\\[").replace(/[\]]/, "\\]");
-      var regex = new RegExp("[\\?&]" + name + "=([^&#]*)"),
-          results = regex.exec(location.search);
-      return results === null ? "" : decodeURIComponent(results[1].replace(/\+/g, " "));
-    }
-    if (this._settings.searchQueryParam) {
-      pathInfo = '/one/two/three?q=hey'
+    var searchQuery = this.getParameterByName(this._settings.searchQueryParam);
+    // Does a search query exist in the path?
+    if (searchQuery.length) {
+      pathInfo = '/search?' + this._settings.searchQueryParam + '=' + searchQuery;
     } else {
-      pathInfo = path
+      pathInfo = path;
     }
-
     return pathInfo;
   },
 
   trackPageView: function(freshPage, optionalTitle) {
-    //var path = this.getWindowLocation().pathname;
     var path = this.pathInfo();
     if (this.trackedPaths.indexOf(path) < 0) {
       ga('send', 'pageview', path);

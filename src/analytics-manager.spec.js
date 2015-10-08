@@ -322,9 +322,10 @@ describe("AnalyticsManager", function() {
   describe("#pathInfo", function() {
 
     it("strips all parameters except the specified query parameter", function () {
-      var pathName = '/one/two/three';
+      var pathName = '/search';
       var queryParam = 'q';
-      var goodQuery = queryParam + '=hey';
+      var searchQuery = 'depp'
+      var goodQuery = queryParam + '=' + searchQuery;
 
       subject.init({
         site: 'testsite',
@@ -333,7 +334,7 @@ describe("AnalyticsManager", function() {
 
       sandbox.stub(subject, 'getWindowLocation').returns({
         pathname: pathName,
-        search: 'no=123&' + goodQuery + '&notToBeIncluded=something'
+        search: 'no=123&' + goodQuery + '&notToBeIncluded=something',
       });
 
       var path = subject.pathInfo();
