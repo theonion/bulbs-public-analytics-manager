@@ -112,7 +112,7 @@ var AnalyticsManager = {
     var searchQuery = this.getParameterByName(this._settings.searchQueryParam);
     // Does a search query exist in the path?
     if (searchQuery.length) {
-      pathInfo = '/search?' + this._settings.searchQueryParam + '=' + searchQuery;
+      pathInfo = path + '?' + this._settings.searchQueryParam + '=' + searchQuery;
     } else {
       pathInfo = path;
     }
