@@ -15,7 +15,8 @@ var AnalyticsManager = {
   init: function(options) {
     this._settings = $.extend({
       site: '',
-      ingestUrl: ''
+      ingestUrl: '',
+      searchQueryParam: 'q',
     }, options);
 
     if (!this._settings.site) {
@@ -25,6 +26,10 @@ var AnalyticsManager = {
     this.trackedPaths = [];
     var body = document.getElementsByTagName('body');
     body[0].addEventListener('click', this.trackClick);
+  },
+
+  getWindowLocation: function () {
+    return window.location;
   },
 
   trackClick: function(event) {
@@ -86,7 +91,7 @@ var AnalyticsManager = {
   },
 
   sendChartbeatEvent: function(title) {
-    var path = window.location.pathname;
+    var path = this.getWindowLocation().pathname;
     if (window.pSUPERFLY) {
       window.pSUPERFLY.virtualPage(path, title);
     } else {
@@ -94,8 +99,27 @@ var AnalyticsManager = {
     }
   },
 
+  getParameterByName: function(name) {
+    name = name.replace(/[\[]/, "\\[").replace(/[\]]/, "\\]");
+    var regex = new RegExp("[\\?&]" + name + "=([^&#]*)"),
+        results = regex.exec(this.getWindowLocation().search);
+    return results === null ? "" : decodeURIComponent(results[1].replace(/\+/g, " "));
+  },
+
+  pathInfo: function () {
+    var pathInfo;
+    var path = this.getWindowLocation().pathname;
+    var searchQuery = this.getParameterByName(this._settings.searchQueryParam);
+    if (searchQuery.length) {
+      pathInfo = path + '?' + this._settings.searchQueryParam + '=' + searchQuery;
+    } else {
+      pathInfo = path;
+    }
+    return pathInfo;
+  },
+
   trackPageView: function(freshPage, optionalTitle) {
-    var path = window.location.pathname;
+    var path = this.pathInfo();
     if (this.trackedPaths.indexOf(path) < 0) {
       ga('send', 'pageview', path);
       ga('adTracker.send', 'pageview', this._settings.site + path);
