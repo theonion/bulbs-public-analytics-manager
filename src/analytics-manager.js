@@ -108,7 +108,11 @@ var AnalyticsManager = {
 
   pathInfo: function () {
     var pathInfo;
-    var path = this.getWindowLocation().pathname;
+    var windowLocation = this.getWindowLocation();
+    var path = windowLocation.pathname;
+    if (windowLocation.hash) {
+      path += windowLocation.hash;
+    }
     var searchQuery = this.getParameterByName(this._settings.searchQueryParam);
     if (searchQuery.length) {
       pathInfo = path + '?' + this._settings.searchQueryParam + '=' + searchQuery;
