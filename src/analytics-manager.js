@@ -106,12 +106,21 @@ var AnalyticsManager = {
     return results === null ? "" : decodeURIComponent(results[1].replace(/\+/g, " "));
   },
 
+  getNodeHash: function(hash) {
+    var re = RegExp('#\\d+,');
+    var results = hash.match(re);
+    if (results) {
+      return result[0];
+    }
+  },
+
   pathInfo: function () {
     var pathInfo;
     var windowLocation = this.getWindowLocation();
     var path = windowLocation.pathname;
-    if (windowLocation.hash) {
-      path += windowLocation.hash;
+    var hash = this.getNodeHash(windowLocation.hash)
+    if (hash) {
+      path += hash;
     }
     var searchQuery = this.getParameterByName(this._settings.searchQueryParam);
     if (searchQuery.length) {
