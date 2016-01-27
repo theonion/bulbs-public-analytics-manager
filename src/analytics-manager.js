@@ -108,7 +108,7 @@ var AnalyticsManager = {
 
   getNodeHash: function(hash) {
     if (hash) {
-      var re = RegExp('#\\d+');
+      var re = RegExp('#\[A-Za-z0-9-]+');
       var results = hash.match(re);
       if (results && hash.search(re) === 0) {
         return results[0];

@@ -378,7 +378,26 @@ describe("AnalyticsManager", function() {
       });
 
       var path = subject.pathInfo();
+      expect(path).to.equal(pathName + hash);
+    });
 
+    it("should include any appended string formatted as a (#1) following the path preceding the query paramters", function() {
+      var pathName = '/clickventure';
+      var hash = '#mambo-numba-5';
+      var queryParam = '?killme=kos';
+
+      subject.init({
+        site: 'testsite',
+        searchQueryParam: queryParam
+      });
+
+      sandbox.stub(subject, 'getWindowLocation').returns({
+        pathname: pathName,
+        search: pathName,
+        hash: hash + queryParam
+      });
+
+      var path = subject.pathInfo();
       expect(path).to.equal(pathName + hash);
     });
 
