@@ -324,7 +324,7 @@ describe("AnalyticsManager", function() {
     it("strips all parameters except the specified query parameter", function () {
       var pathName = '/search';
       var queryParam = 'q';
-      var searchQuery = 'depp'
+      var searchQuery = 'depp';
       var goodQuery = queryParam + '=' + searchQuery;
 
       subject.init({
@@ -360,5 +360,47 @@ describe("AnalyticsManager", function() {
 
       expect(path).to.equal(pathName);
     });
+
+    it("should include any appended string formatted as a (#1) following the path preceding the query paramters", function() {
+      var pathName = '/clickventure';
+      var hash = '#5';
+      var queryParam = '?killme=kos';
+
+      subject.init({
+        site: 'testsite',
+        searchQueryParam: queryParam
+      });
+
+      sandbox.stub(subject, 'getWindowLocation').returns({
+        pathname: pathName,
+        search: pathName,
+        hash: hash + queryParam
+      });
+
+      var path = subject.pathInfo();
+
+      expect(path).to.equal(pathName + hash);
+    });
+
+    it("should exclude any appended string formatted as a (#1) following the path and follwing the query paramters", function() {
+      var pathName = '/clickventure';
+      var queryParam = '?mygarbage=fun#5';
+
+      subject.init({
+        site: 'testsite',
+        searchQueryParam: queryParam,
+      });
+
+      sandbox.stub(subject, 'getWindowLocation').returns({
+        pathname: pathName,
+        search: pathName,
+        hash: queryParam
+      });
+
+      var path = subject.pathInfo();
+
+      expect(path).to.equal(pathName);
+    });
+
   });
 });

@@ -107,10 +107,12 @@ var AnalyticsManager = {
   },
 
   getNodeHash: function(hash) {
-    var re = RegExp('#\\d+,');
-    var results = hash.match(re);
-    if (results) {
-      return result[0];
+    if (hash) {
+      var re = RegExp('#\\d+');
+      var results = hash.match(re);
+      if (results && hash.search(re) === 0) {
+        return results[0];
+      }
     }
   },
 
@@ -118,7 +120,7 @@ var AnalyticsManager = {
     var pathInfo;
     var windowLocation = this.getWindowLocation();
     var path = windowLocation.pathname;
-    var hash = this.getNodeHash(windowLocation.hash)
+    var hash = this.getNodeHash(windowLocation.hash);
     if (hash) {
       path += hash;
     }
