@@ -33,8 +33,14 @@ var AnalyticsManager = {
   },
 
   trackClick: function(event) {
-    var trackedElement = $(event.target).closest('[data-track-category]');
+    var target = $(event.target);
+    var trackedElement = target.closest('[data-track-category]');
     var category = trackedElement.data('track-category');
+
+    var trackAsPageView = target.is('[data-track-as-pageview]');
+    if (trackAsPageView) {
+      this.trackPageView(false, "");
+    }
 
     if (!category) {
       return;
