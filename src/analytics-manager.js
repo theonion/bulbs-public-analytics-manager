@@ -106,9 +106,24 @@ var AnalyticsManager = {
     return results === null ? "" : decodeURIComponent(results[1].replace(/\+/g, " "));
   },
 
+  getNodeHash: function(hash) {
+    if (hash) {
+      var re = RegExp('#\[A-Za-z0-9-]+');
+      var results = hash.match(re);
+      if (results && hash.search(re) === 0) {
+        return results[0];
+      }
+    }
+  },
+
   pathInfo: function () {
     var pathInfo;
-    var path = this.getWindowLocation().pathname;
+    var windowLocation = this.getWindowLocation();
+    var path = windowLocation.pathname;
+    var hash = this.getNodeHash(windowLocation.hash);
+    if (hash) {
+      path += hash;
+    }
     var searchQuery = this.getParameterByName(this._settings.searchQueryParam);
     if (searchQuery.length) {
       pathInfo = path + '?' + this._settings.searchQueryParam + '=' + searchQuery;
