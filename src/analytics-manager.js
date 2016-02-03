@@ -122,7 +122,7 @@ var AnalyticsManager = {
     var path = windowLocation.pathname;
     var hash = this.getNodeHash(windowLocation.hash);
     if (hash) {
-      path += hash;
+      path += '/' + hash;
     }
     var searchQuery = this.getParameterByName(this._settings.searchQueryParam);
     if (searchQuery.length) {
