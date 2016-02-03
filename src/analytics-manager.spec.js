@@ -362,7 +362,7 @@ describe("AnalyticsManager", function() {
     });
 
     it("should include any appended string formatted as a (#1) following the path preceding the query paramters", function() {
-      var pathName = '/clickventure';
+      var pathName = '/clickventure/can-you-survive-night-town-rat-pack-3423';
       var hash = '#5';
       var queryParam = '?killme=kos';
 
@@ -378,11 +378,11 @@ describe("AnalyticsManager", function() {
       });
 
       var path = subject.pathInfo();
-      expect(path).to.equal(pathName + hash);
+      expect(path).to.equal('/clickventure/can-you-survive-night-town-rat-pack-3423/#5');
     });
 
     it("should include any appended string formatted as a (#1) following the path preceding the query paramters", function() {
-      var pathName = '/clickventure';
+      var pathName = '/clickventure/can-you-survive-night-town-rat-pack-3423';
       var hash = '#mambo-numba-5';
       var queryParam = '?killme=kos';
 
@@ -398,7 +398,7 @@ describe("AnalyticsManager", function() {
       });
 
       var path = subject.pathInfo();
-      expect(path).to.equal(pathName + hash);
+      expect(path).to.equal('/clickventure/can-you-survive-night-town-rat-pack-3423/#mambo-numba-5');
     });
 
     it("should exclude any appended string formatted as a (#1) following the path and follwing the query paramters", function() {
