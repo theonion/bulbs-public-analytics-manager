@@ -1,6 +1,7 @@
 {
   "name": "bulbs-public-analytics-manager",
-  "private": true,
+  "private": false,
+  "version": "0.1.3",
   "scripts": {
     "test": "./node_modules/karma/bin/karma start resources/karma.conf.js"
   },
