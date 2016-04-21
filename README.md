@@ -15,6 +15,9 @@ for up through the parents until one is found.
 This module must be browserified or otherwise made into a module before it can
 be used.
 
+## Debug Mode
+Set `window.analyticsTest = true;` and this will print out analytics debug info.
+
 ## Testing
 To run tests:
 ```bash
