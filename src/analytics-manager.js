@@ -151,17 +151,24 @@ var AnalyticsManager = {
     }
   },
 
-  sendEvent: function(trackedEvent) {
+  sendEvent: function(trackedEvent, options) {
     if ((typeof(trackedEvent.eventCategory) === 'undefined') ||
       (typeof(trackedEvent.eventAction) === 'undefined') ||
       (typeof(trackedEvent.eventLabel) === 'undefined')) {
       return;
     }
 
+    var sender;
+    if (options && options.trackerName) {
+      sender = options.trackerName + '.send';
+    } else {
+      sender = 'send';
+    }
+
     if (AnalyticsManager.debugMode()) {
       console.log(trackedEvent);
     } else {
-      ga('send', 'event', trackedEvent);
+      ga(sender, 'event', trackedEvent);
     }
   }
 };

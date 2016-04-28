@@ -317,6 +317,17 @@ describe("AnalyticsManager", function() {
         expect(window.ga.calledWith('send', 'event', trackedEvent)).to.be.true;
       });
     });
+
+    context("with named tracker", function() {
+      beforeEach(function() {
+        window.analyticsTest = false;
+        subject.sendEvent(trackedEvent, { trackerName: 'trackerName' });
+      });
+
+      it("sends the event to GA with the prefix", function() {
+        expect(window.ga.calledWith('trackerName.send', 'event', trackedEvent)).to.be.true;
+      });
+    });
   });
 
   describe("#pathInfo", function() {
