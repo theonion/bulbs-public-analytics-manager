@@ -90,15 +90,6 @@ var AnalyticsManager = {
     }
   },
 
-  sendChartbeatEvent: function(title) {
-    var path = this.getWindowLocation().pathname;
-    if (window.pSUPERFLY) {
-      window.pSUPERFLY.virtualPage(path, title);
-    } else {
-      console.warn('pSUPERFLY not available');
-    }
-  },
-
   getParameterByName: function(name) {
     name = name.replace(/[\[]/, "\\[").replace(/[\]]/, "\\]");
     var regex = new RegExp("[\\?&]" + name + "=([^&#]*)"),
@@ -144,9 +135,6 @@ var AnalyticsManager = {
 
       Ingest.sendEvent(this._settings.ingestUrl);
 
-      if (!freshPage) {
-        this.sendChartbeatEvent(optionalTitle);
-      }
       this.trackedPaths.push(path);
     }
   },
