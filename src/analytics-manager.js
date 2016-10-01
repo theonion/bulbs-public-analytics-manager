@@ -23,6 +23,8 @@ var AnalyticsManager = {
       throw new _AnalyticsManagerError('Site name must be specified!');
     }
 
+    this.ingest = Ingest.init({ ingestUrl: this._settings.ingestUrl });
+
     this.trackedPaths = [];
     var body = document.getElementsByTagName('body');
     body[0].addEventListener('click', this.trackClick);
@@ -133,7 +135,7 @@ var AnalyticsManager = {
       this.sendQuantcastPixel(freshPage);
       this.sendComscorePixel(freshPage, optionalTitle);
 
-      Ingest.sendEvent(this._settings.ingestUrl);
+      this.ingest.sendEvent();
 
       this.trackedPaths.push(path);
     }
