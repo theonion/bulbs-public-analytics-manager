@@ -16,15 +16,15 @@ describe('AnalyticsIngest', function () {
       ingest = Ingest.init({ debugMode: true, ingestUrl: 'http://ingest.onion.com/ingest.gif' });
     });
 
-    describe('#processEventQueue', function() {
+    describe('#processFirstEvent', function() {
       it('processes the first item in the queue if present', function () {
         ingest.enqueueUrl('http://ingest.onion.com/ingest.gif');
-        var processedItem = ingest.processEventQueue();
+        var processedItem = ingest.processFirstEvent();
         expect(processedItem).to.equal('http://ingest.onion.com/ingest.gif');
       });
 
       it('does nothing if no items in queue', function() {
-        var processedItem = ingest.processEventQueue();
+        var processedItem = ingest.processFirstEvent();
         expect(processedItem).to.be.undefined;
       });
     });

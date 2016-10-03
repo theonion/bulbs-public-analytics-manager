@@ -24,12 +24,12 @@ var AnalyticsIngest = function (options) {
   this.endpoint = settings.ingestUrl;
 
   if (!settings.debugMode) {
-    setInterval(this.processEventQueue, 100);
+    setInterval(this.processFirstEvent, 100);
   }
 };
 
-AnalyticsIngest.prototype.processEventQueue = function () {
-  var processedUrl = eventQueue.pop();
+AnalyticsIngest.prototype.processFirstEvent = function () {
+  var processedUrl = eventQueue.shift();
 
   if (processedUrl) {
     var img = new Image();
