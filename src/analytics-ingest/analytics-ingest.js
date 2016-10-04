@@ -8,30 +8,63 @@ var _AnalyticsIngestError = function (message) {
 };
 _AnalyticsIngestError.prototype = Object.create(Error.prototype);
 
-var AnalyticsIngest = {
-  /**
-   * Sends the page information to the ingestion endpoint
-   */
-  sendEvent: function (endpoint) {
+var eventQueue;
 
-    if (typeof(endpoint) !== 'string') {
-      throw new _AnalyticsIngestError('Ingest endpoint must be set!');
-    }
+var AnalyticsIngest = function (options) {
+  var settings = $.extend({
+    debugMode: false
+  }, options);
 
-    var cacheBuster = (new Date()).getTime();
+  eventQueue = [];
 
-    var url =
-      endpoint +
-      '?' + cacheBuster +
-      '&hostname=' + window.location.hostname +
-      '&pathname=' + window.location.pathname +
-      '&search=' + window.location.search;
+  if (typeof(settings.ingestUrl) !== 'string') {
+    throw new _AnalyticsIngestError('Ingest endpoint must be set!');
+  }
 
-    setTimeout(function () {
-      var img = new Image();
-      img.src = url;
-    });
+  this.endpoint = settings.ingestUrl;
+
+  if (!settings.debugMode) {
+    setInterval(this.processFirstEvent, 100);
   }
 };
 
-module.exports = AnalyticsIngest;
+AnalyticsIngest.prototype.processFirstEvent = function () {
+  var processedUrl = eventQueue.shift();
+
+  if (processedUrl) {
+    var img = new Image();
+    img.src = processedUrl;
+  }
+
+  return processedUrl;
+};
+
+AnalyticsIngest.prototype.queueSize = function () {
+  return eventQueue.length;
+};
+
+AnalyticsIngest.prototype.enqueueUrl = function (url) {
+  eventQueue.push(url);
+};
+
+/**
+* Sends the page information to the ingestion endpoint
+*/
+AnalyticsIngest.prototype.sendEvent = function () {
+  var cacheBuster = (new Date()).getTime();
+
+  var url =
+    this.endpoint +
+    '?' + cacheBuster +
+    '&hostname=' + window.location.hostname +
+    '&pathname=' + window.location.pathname +
+    '&search=' + window.location.search;
+
+  this.enqueueUrl(url);
+};
+
+module.exports = {
+  init: function (options) {
+    return new AnalyticsIngest(options);
+  }
+};
