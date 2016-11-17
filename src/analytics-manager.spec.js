@@ -422,4 +422,22 @@ describe("AnalyticsManager", function() {
     });
 
   });
+
+  describe('#trackPageView', function () {
+    var pathInfo;
+
+    beforeEach( function () {
+      pathInfo = sinon.stub(subject, 'pathInfo').returns('website');
+    });
+    afterEach( function () {
+      pathInfo.restore();
+    });
+
+    it('sends pageview with optionalGaPrefix', function () {
+      subject.trackPageView('/fresh/page/path', 'funTitle', 'websitePage345');
+      var expected = window.ga
+        .calledWith('websitePage345.send', 'pageview', 'website');
+      expect(expected).to.be.true;
+    });
+  });
 });
