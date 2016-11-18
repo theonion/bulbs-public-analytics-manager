@@ -442,16 +442,15 @@ describe("AnalyticsManager", function() {
     });
 
     it('sends pageview with optionalGaTrackerAction', function () {
-      var optionalGaTrackerAction = sandbox.stub();
+      var optionalGaWrappedTracker = sandbox.stub();
       subject.trackPageView(
         '/fresh/page/path',
         'funTitle',
-        optionalGaTrackerAction
+        optionalGaWrappedTracker
       );
-      var expected = optionalGaTrackerAction
+      var expected = optionalGaWrappedTracker
         .calledWith('send', 'pageview', 'website' + parseInt(counter - 1));
       expect(expected).to.be.true;
     });
-
   });
 });

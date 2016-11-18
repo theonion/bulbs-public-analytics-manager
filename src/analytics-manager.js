@@ -126,11 +126,11 @@ var AnalyticsManager = {
     return pathInfo;
   },
 
-  trackPageView: function(freshPage, optionalTitle, optionalGaTrackerAction) {
+  trackPageView: function(freshPage, optionalTitle, optionalGaWrappedTracker) {
     var path = this.pathInfo();
     if (this.trackedPaths.indexOf(path) < 0) {
-      if (optionalGaTrackerAction) {
-        optionalGaTrackerAction('send', 'pageview', path);
+      if (optionalGaWrappedTracker) {
+        optionalGaWrappedTracker('send', 'pageview', path);
       } else {
         ga('send', 'pageview', path);
       }
