@@ -422,4 +422,35 @@ describe("AnalyticsManager", function() {
     });
 
   });
+
+  describe('#trackPageView', function () {
+    var pathInfo;
+    var counter = 0;
+
+    beforeEach( function () {
+      pathInfo = sinon.stub(subject, 'pathInfo').returns('website' + parseInt(counter++));
+    });
+    afterEach( function () {
+      pathInfo.restore();
+    });
+
+    it('sends pageview', function () {
+      subject.trackPageView('/fresh/page/path', 'funTitle');
+      var expected = window.ga
+        .calledWith('send', 'pageview', 'website' + parseInt(counter - 1));
+      expect(expected).to.be.true;
+    });
+
+    it('sends pageview with optionalGaTrackerAction', function () {
+      var optionalGaWrappedTracker = sandbox.stub();
+      subject.trackPageView(
+        '/fresh/page/path',
+        'funTitle',
+        optionalGaWrappedTracker
+      );
+      var expected = optionalGaWrappedTracker
+        .calledWith('send', 'pageview', 'website' + parseInt(counter - 1));
+      expect(expected).to.be.true;
+    });
+  });
 });

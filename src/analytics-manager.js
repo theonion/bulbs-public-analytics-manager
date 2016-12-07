@@ -126,10 +126,14 @@ var AnalyticsManager = {
     return pathInfo;
   },
 
-  trackPageView: function(freshPage, optionalTitle) {
+  trackPageView: function(freshPage, optionalTitle, optionalGaWrappedTracker) {
     var path = this.pathInfo();
     if (this.trackedPaths.indexOf(path) < 0) {
-      ga('send', 'pageview', path);
+      if (optionalGaWrappedTracker) {
+        optionalGaWrappedTracker('send', 'pageview', path);
+      } else {
+        ga('send', 'pageview', path);
+      }
       ga('adTracker.send', 'pageview', this._settings.site + path);
 
       this.sendQuantcastPixel(freshPage);
