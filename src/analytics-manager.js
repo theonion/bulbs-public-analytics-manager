@@ -126,6 +126,12 @@ var AnalyticsManager = {
     return pathInfo;
   },
 
+  setDimension: function(dimKey, dimVal) {
+    if (dimVal !== null) {
+      ga('set', dimKey, dimVal);
+    }
+  },
+
   trackPageView: function(freshPage, optionalTitle, optionalGaWrappedTracker) {
     var path = this.pathInfo();
     if (this.trackedPaths.indexOf(path) < 0) {
