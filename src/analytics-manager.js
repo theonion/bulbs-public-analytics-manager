@@ -77,7 +77,7 @@ var AnalyticsManager = {
     if(freshPage) {
       this.comscoreBeacon();
     } else {
-      $.get("/t/pageview_candidate.xml?title=" + encodeURIComponent( title ) + "&rand=" + Math.round(Math.random() * 10000000));
+      window.fetch("/t/pageview_candidate.xml?title=" + encodeURIComponent( title ) + "&rand=" + Math.round(Math.random() * 10000000));
       this.comscoreBeacon();
     }
   },
