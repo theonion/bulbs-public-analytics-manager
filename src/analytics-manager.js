@@ -77,8 +77,12 @@ var AnalyticsManager = {
     if(freshPage) {
       this.comscoreBeacon();
     } else {
-      $.get("/t/pageview_candidate.xml?title=" + encodeURIComponent( title ) + "&rand=" + Math.round(Math.random() * 10000000));
-      this.comscoreBeacon();
+      if (typeof window.fetch !== 'undefined') {
+        window.fetch("/t/pageview_candidate.xml?title=" + encodeURIComponent( title ) + "&rand=" + Math.round(Math.random() * 10000000));
+        this.comscoreBeacon();
+      } else {
+        console.warn('window.fetch undefined, unable to trigger comScore pageview candidate');
+      }
     }
   },
 
