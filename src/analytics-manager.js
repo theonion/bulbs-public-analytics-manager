@@ -1,5 +1,3 @@
-var Ingest = require('./analytics-ingest/analytics-ingest');
-
 var _AnalyticsManagerError = function (message) {
   this.name = 'AnalyticsManagerError';
   this.message = message || '';
@@ -15,15 +13,12 @@ var AnalyticsManager = {
   init: function(options) {
     this._settings = $.extend({
       site: '',
-      ingestUrl: '',
       searchQueryParam: 'q',
     }, options);
 
     if (!this._settings.site) {
       throw new _AnalyticsManagerError('Site name must be specified!');
     }
-
-    this.ingest = Ingest.init({ ingestUrl: this._settings.ingestUrl });
 
     this.trackedPaths = [];
     var body = document.getElementsByTagName('body');
@@ -142,8 +137,6 @@ var AnalyticsManager = {
 
       this.sendQuantcastPixel(freshPage);
       this.sendComscorePixel(freshPage, optionalTitle);
-
-      this.ingest.sendEvent();
 
       this.trackedPaths.push(path);
     }
