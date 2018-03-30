@@ -133,7 +133,6 @@ var AnalyticsManager = {
       } else {
         ga('send', 'pageview', path);
       }
-      ga('adTracker.send', 'pageview', this._settings.site + path);
 
       this.sendQuantcastPixel(freshPage);
       this.sendComscorePixel(freshPage, optionalTitle);
